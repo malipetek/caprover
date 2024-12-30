@@ -44,23 +44,11 @@ echo $IMAGE_NAME:$CAPROVER_VERSION
 echo "**************************************"
 echo "**************************************"
 
-FRONTEND_COMMIT_HASH=df22c8f553f3a881764896ddc9dcbf55fdf68507
-
-## Building frontend app
-ORIG_DIR=$(pwd)
-FRONTEND_DIR=/home/runner/app-frontend
-curl -Iv https://registry.yarnpkg.com/
-mkdir -p $FRONTEND_DIR && cd $FRONTEND_DIR
-git clone https://github.com/githubsaturn/caprover-frontend.git
-cd caprover-frontend
-git reset --hard $FRONTEND_COMMIT_HASH
-git log --max-count=1
-yarn install --no-cache --frozen-lockfile --network-timeout 600000
-echo "Installation finished"
-yarn run build
-echo "Building finished"
-cd $ORIG_DIR
-mv $FRONTEND_DIR/caprover-frontend/build ./dist-frontend
+## Building frontend app using SvelteKit
+cd frontend
+npm install
+npm run build
+cd ..
 
 sudo apt-get update && sudo apt-get install qemu-user-static
 # docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
